@@ -20,9 +20,9 @@ class Notatka(Przedmiot):
         self.tresc = tresc
 
     def __str__(self):  # funkcja odpowiada za print() na instancji
-        info = self.typ + 'Priorytet: ' + self.priorytet + '\n'
-        info += self.tytul + '\n'
-        info += self.tresc + '\n'
+        info = 'Priorytet: ' + self.priorytet + '\n'
+        info += 'Tytuł: ' + self.tytul + '\n'
+        info += 'Treść: ' + self.tresc + '\n'
         return info
 
 
@@ -35,9 +35,9 @@ class Wizytowka(Przedmiot):
         self.telefon = telefon
 
     def __str__(self):
-        info = self.typ + 'Priorytet: ' + self.priorytet + '\n'
-        info += self.imie + ' ' + self.nazwisko + '\n'
-        info += self.telefon
+        info = 'Priorytet: ' + self.priorytet + '\n'
+        info += 'Imię: ' + self.imie + ' Nazwisko: ' + self.nazwisko + '\n'
+        info += 'Telefon: ' + self.telefon + '\n'
         return info
 
 
@@ -50,7 +50,7 @@ class KuponRabatowy(Przedmiot):
         self.kod = kod
 
     def __str__(self):
-        info = self.typ + 'Priorytet: ' + self.priorytet + '\n'
-        info += 'Rabat do sklepu ' + self.sklep + ' w wysokości ' + self.rabat + '\n'
-        info += 'Kod rabatowy: ' + self.kod
+        info = 'Priorytet: ' + self.priorytet + '\n'
+        info += 'Sklep: ' + self.sklep + ', wysokość rabatu: ' + self.rabat + '\n'
+        info += 'Kod rabatowy: ' + self.kod + '\n'
         return info
