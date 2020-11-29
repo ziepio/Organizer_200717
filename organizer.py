@@ -1,9 +1,10 @@
 from przedmioty import Notatka, Wizytowka, KuponRabatowy
+from db_mysql import MySQLdb
 
 
 class Organizer(object):
     __wlasciciel = ''
-    __baza_danych = []
+    # __baza_danych = []
 
     def __init__(self, wlasciciel):
         self.wlasciciel = wlasciciel
@@ -14,7 +15,10 @@ class Organizer(object):
         tresc = input('Tresc: ')
 
         nowa_notatka = Notatka(priorytet, tytul, tresc)
-        self.__baza_danych.append(nowa_notatka)
+        # self.__baza_danych.append(nowa_notatka)
+        MySQLdb.connect_to_db(self.__wlasciciel)
+        MySQLdb.insert_into_db(nowa_notatka.typ, nowa_notatka)
+
 
     def wyswietl_notatke(self):
         print('Lista notatek: ')
