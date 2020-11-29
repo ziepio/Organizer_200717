@@ -1,6 +1,7 @@
 from organizer import Organizer
 
-my_organizer = Organizer('My_organizer')
+
+my_organizer = Organizer('Piotr')
 
 while True:
 

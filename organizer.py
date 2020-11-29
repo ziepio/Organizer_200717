@@ -1,23 +1,25 @@
 from przedmioty import Notatka, Wizytowka, KuponRabatowy
 from db_mysql import MySQLdb
+from datetime import datetime
 
 
 class Organizer(object):
-    __wlasciciel = ''
+    # __wlasciciel = ''
     # __baza_danych = []
+    today_date = datetime.now().date()
 
     def __init__(self, wlasciciel):
         self.wlasciciel = wlasciciel
+        MySQLdb().connect_to_db(self.wlasciciel)
+        MySQLdb().create_tables()
 
     def dodaj_notatke(self):
-        priorytet = input('Priorytet: ')
-        tytul = input('Tytuł: ')
-        tresc = input('Tresc: ')
+        priority = input('Priority: ')
+        title = input('Title: ')
+        content = input('Content: ')
 
-        nowa_notatka = Notatka(priorytet, tytul, tresc)
-        # self.__baza_danych.append(nowa_notatka)
-        MySQLdb.connect_to_db(self.__wlasciciel)
-        MySQLdb.insert_into_db(nowa_notatka.typ, nowa_notatka)
+        new_note = Notatka(self.today_date, priority, title, content)
+        MySQLdb.insert_into_db(new_note.typ, new_note)
 
 
     def wyswietl_notatke(self):
@@ -32,8 +34,8 @@ class Organizer(object):
         nazwisko = input('Nazwisko: ')
         telefon = input('Telefon: ')
 
-        nowa_wizytowka = Wizytowka(priorytet, imie, nazwisko, telefon)
-        self.__baza_danych.append(nowa_wizytowka)
+        nowa_wizytowka = Wizytowka(self.today_date, priorytet, imie, nazwisko, telefon)
+        # self.__baza_danych.append(nowa_wizytowka)
 
     def wyswietl_wizytowke(self):
         print('Lista wizytówek: ')
@@ -47,7 +49,7 @@ class Organizer(object):
         kod = input('Kod: ')
         priorytet = input('Priorytet: ')
 
-        nowy_rabat = KuponRabatowy(priorytet, sklep, rabat, kod)
+        nowy_rabat = KuponRabatowy(self.today_date, priorytet, sklep, rabat, kod)
         self.__baza_danych.append(nowy_rabat)
 
     def wyswietl_kod_rabatowy(self):
