@@ -7,11 +7,12 @@ class Organizer(object):
     # __wlasciciel = ''
     # __baza_danych = []
     today_date = datetime.now().date()
+    database = MySQLdb()
 
     def __init__(self, wlasciciel):
         self.wlasciciel = wlasciciel
-        MySQLdb().connect_to_db(self.wlasciciel)
-        MySQLdb().create_tables()
+        self.database.connect_to_db(self.wlasciciel)
+        self.database.create_tables()
 
     def dodaj_notatke(self):
         priority = input('Priority: ')
@@ -19,7 +20,8 @@ class Organizer(object):
         content = input('Content: ')
 
         new_note = Notatka(self.today_date, priority, title, content)
-        MySQLdb.insert_into_db(new_note.typ, new_note)
+        data = (new_note.date, new_note.priorytet, new_note.tytul, new_note.tresc)
+        self.database.insert_into_db_note(data)
 
 
     def wyswietl_notatke(self):

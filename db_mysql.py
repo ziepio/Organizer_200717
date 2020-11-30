@@ -4,7 +4,7 @@ from mysql.connector import errorcode
 
 class MySQLdb(object):
     db_root_user = 'root'
-    db_root_pass = '*****'
+    db_root_pass = '****'
     db_host = 'localhost'
     cnx = mysql.connector.connect(host=db_host, user=db_root_user, password=db_root_pass)
     cursor = cnx.cursor()
@@ -31,7 +31,7 @@ class MySQLdb(object):
     def create_tables(self):
         tables = {}
 
-        tables['notes'] = 'CREATE TABLE notes(' \
+        tables['note'] = 'CREATE TABLE note(' \
                           'id int(11) PRIMARY KEY auto_increment,' \
                           'date date not null,' \
                           'priority int(11),' \
@@ -39,7 +39,7 @@ class MySQLdb(object):
                           'content nvarchar(8000) not null' \
                           ');'
 
-        tables['business_cards'] = 'CREATE TABLE business_cards(' \
+        tables['business_card'] = 'CREATE TABLE business_card(' \
                                    'id int(11) PRIMARY KEY auto_increment,' \
                                    'date date not null,' \
                                    'priority int(11),' \
@@ -48,7 +48,7 @@ class MySQLdb(object):
                                    'phone_number char(9) not null' \
                                    ');'
 
-        tables['discount_codes'] = 'CREATE TABLE discount_codes(' \
+        tables['discount_code'] = 'CREATE TABLE discount_code(' \
                                    'id int(11) PRIMARY KEY auto_increment,' \
                                    'date date not null,' \
                                    'priority int(11),' \
@@ -68,11 +68,13 @@ class MySQLdb(object):
                 else:
                     print(err.msg)
             else:
-                print('ok')
+                print('done')
         print('')
 
-    def insert_into_db(self, table_name, *args):
-        self.cursor(f'INSERT INTO {table_name} VALUES ({args});')
+    def insert_into_db_note(self, data):
+        insert_query = 'INSERT INTO note (date, priority, title, content) VALUES (%s, %s, %s, %s);'
+        self.cursor.execute(insert_query, data)
+        self.cnx.commit()
 
     def extract_from_db(self):
         pass

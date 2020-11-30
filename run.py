@@ -1,6 +1,5 @@
 from organizer import Organizer
 
-
 my_organizer = Organizer('Piotr')
 
 while True:
@@ -29,5 +28,6 @@ while True:
             my_organizer.wyswietl_kod_rabatowy()
         if x == '0':
             break
-    except:
-        print('The selected option does not exist.\n')
+    except AttributeError as error:
+        print(error)
+    print('')
