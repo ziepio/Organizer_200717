@@ -71,10 +71,10 @@ class MySQLdb(object):
                 print('done')
         print('')
 
-    def insert_note_into_db(self, data):
+    def insert_note_into_db(self, new_note):
         insert_query = 'INSERT INTO note (date, priority, title, content) ' \
-                       'VALUES (%s, %s, %s, %s);'
-        self.cursor.execute(insert_query, data)
+                       'VALUES (%(date)s, %(priority)s, %(title)s, %(content)s);'
+        self.cursor.execute(insert_query, new_note)
         self.cnx.commit()
 
     def extract_note_from_db(self):

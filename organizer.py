@@ -18,8 +18,7 @@ class Organizer(object):
         content = input('Content: ')
 
         new_note = Note(priority, title, content)
-        data = (new_note.date, new_note.priority, new_note.title, new_note.content)
-        self.database.insert_note_into_db(data)
+        self.database.insert_note_into_db(new_note.__dict__)
 
     def display_notes(self):
         print('Your notes:')
