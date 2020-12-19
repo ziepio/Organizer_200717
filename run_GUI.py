@@ -1,4 +1,8 @@
+from organizer import Organizer
 import PySimpleGUI as sg
+
+
+my_organizer = Organizer('PiotrGUI')
 
 tool_button_list = ['-NOTE-', '-BC-', '-DC-']
 tools_column = [
@@ -66,6 +70,7 @@ layout = [
 window = sg.Window('Organizer v1.0', layout, size=(600, 400))
 
 
+
 def return_to_start_settings():
     actions = ['-TITLE_DESC-', '-TITLE-', '-CONTENT_DESC-', '-CONTENT-', '-ID_REMOVE1_DESC-', '-ID_REMOVE1-',
                '-SUBMIT1-', '-FIRST_DESC-', '-FIRST-', '-LAST_DESC-', '-LAST-', '-MOBILE_DESC-', '-MOBILE-',
@@ -76,24 +81,23 @@ def return_to_start_settings():
     for action in actions:
         window[action].update(visible=False)
     for action_button in action_button_list:
-        window[action_button].update(disabled=False)
+        window[action_button].update(disabled=False, button_color=('black', 'white'))
     for each_layout in layout_list:
         window[each_layout].update(visible=False)
 
-
 def enable_button(button_key: str):
-    window[button_key].update(disabled=False)
+    window[button_key].update(disabled=False, button_color=('black', 'white'))
 
 def disable_button(button_key: str):
-    window[button_key].update(disabled=True)
+    window[button_key].update(disabled=True, button_color=('white', 'black'))
 
-def mark_the_selected_button(event):
+def mark_the_selected_button(event: str):
     tools = ['-NOTE-', '-BC-', '-DC-']
     for tool in tools:
         window[tool].update(button_color=('black', 'white'))
     window[event].update(button_color=('white', 'black'))
 
-def select_layout(event):
+def load_layout(event: str):
     act_col_dict = {'-NOTE-': '-LAYOUT1-', '-BC-': '-LAYOUT2-', '-DC-': '-LAYOUT3-'}
     window[act_col_dict[event]].update(visible=True)
 
@@ -108,28 +112,53 @@ def set_visibility(chosen_tool: str, on_off: bool):
     if on_off is False:
         window[f'-SUBMIT{dict_tools[chosen_tool][-1][-2]}-'].update(visible=True)
 
+def submit_input(event):
+    actions = {'-SUBMIT1-': ['-TITLE-', '-CONTENT-', '-ID_REMOVE1-'],
+               '-SUBMIT2-': ['-FIRST-', '-LAST-', '-MOBILE-', '-ID_REMOVE2-'],
+               '-SUBMIT3-': ['-SHOP-', '-DISCOUNT-', '-CODE-', '-ID_REMOVE3-']}
+    if event in actions:
+        for value in actions[event]:
+            window[value].update('')
+
 while True:
     event, values = window.read()
     if event == 'Exit' or event == sg.WIN_CLOSED:
         break
     if event in ('-NOTE-', '-BC-', '-DC-'):
-        chosen_tool = event
+        selected_tool = event
+        # value_selected_tool = values[event]
         return_to_start_settings()
         mark_the_selected_button(event)
-        select_layout(event)
+        load_layout(event)
 
     if event in ('-ADD1-', '-ADD2-', '-ADD3-'):
+        selected_add = event
+        # value_selected_add = values[event]
         enable_button(f'-REMOVE{event[-2]}-')
         disable_button(event)
-        if chosen_tool in ('-NOTE-', '-BC-', '-DC-'):
-            set_visibility(chosen_tool, True)
+        if selected_tool in ('-NOTE-', '-BC-', '-DC-'):
+            set_visibility(selected_tool, True)
             window[f'-ID_REMOVE{event[-2]}_DESC-'].update(visible=False)
             window[f'-ID_REMOVE{event[-2]}-'].update(visible=False)
 
     if event in ('-REMOVE1-', '-REMOVE2-', '-REMOVE3-'):
+        selected_remove = event
+        # value_selected_remove = values[event]
         enable_button(f'-ADD{event[-2]}-')
         disable_button(event)
-        if chosen_tool in ('-NOTE-', '-BC-', '-DC-'):
-            set_visibility(chosen_tool, False)
+        if selected_tool in ('-NOTE-', '-BC-', '-DC-'):
+            set_visibility(selected_tool, False)
             window[f'-ID_REMOVE{event[-2]}_DESC-'].update(visible=True)
             window[f'-ID_REMOVE{event[-2]}-'].update(visible=True)
+
+    if event in ('-SUBMIT1-', '-SUBMIT2-', '-SUBMIT3-'):
+        if selected_tool == '-NOTE-' and selected_add == '-ADD1-':
+            try:
+                value_title = values['-TITLE-']
+                value_content = values['-CONTENT-']
+                my_organizer.add_note(value_title, value_content)
+                submit_input(event)
+            except Exception as inst:
+                print(type(inst))
+                print(inst.args)
+                print(inst)

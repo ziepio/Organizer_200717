@@ -26,35 +26,35 @@ class MySQLdb(object):
                 else:
                     print('created and connected')
         else:
-            print('done')
+            print('connected')
 
     def create_tables(self):
         tables = {}
 
         tables['note'] = 'CREATE TABLE note(' \
                          'id int(11) PRIMARY KEY auto_increment,' \
-                         'date date not null,' \
-                         'priority int(11),' \
-                         'title nvarchar(100) not null,' \
-                         'content nvarchar(8000) not null' \
+                         'date DATE DEFAULT(CURRENT_DATE),' \
+                         'time TIME DEFAULT(CURRENT_TIME),' \
+                         'title nvarchar(100) NOT NULL,' \
+                         'content nvarchar(8000) NOT NULL' \
                          ');'
 
         tables['business_card'] = 'CREATE TABLE business_card(' \
                                   'id int(11) PRIMARY KEY auto_increment,' \
-                                  'date date not null,' \
-                                  'priority int(11),' \
+                                  'date DATE DEFAULT(CURRENT_DATE),' \
+                                  'time TIME DEFAULT(CURRENT_TIME),' \
                                   'name varchar(45),' \
                                   'surname nvarchar(45),' \
-                                  'mobile char(9) not null' \
+                                  'mobile char(9) NOT NULL' \
                                   ');'
 
         tables['discount_code'] = 'CREATE TABLE discount_code(' \
                                   'id int(11) PRIMARY KEY auto_increment,' \
-                                  'date date not null,' \
-                                  'priority int(11),' \
-                                  'shop varchar(45) not null,' \
-                                  'discount varchar(11) not null,' \
-                                  'code varchar(30) not null' \
+                                  'date DATE DEFAULT(CURRENT_DATE),' \
+                                  'time TIME DEFAULT(CURRENT_TIME),' \
+                                  'shop varchar(45) NOT NULL,' \
+                                  'discount varchar(11) NOT NULL,' \
+                                  'code varchar(30) NOT NULL' \
                                   ');'
 
         for table in tables:
@@ -72,8 +72,8 @@ class MySQLdb(object):
         print('')
 
     def insert_note_into_db(self, new_note):
-        insert_query = 'INSERT INTO note (date, priority, title, content) ' \
-                       'VALUES (%(date)s, %(priority)s, %(title)s, %(content)s);'
+        insert_query = 'INSERT INTO note (title, content) ' \
+                       'VALUES (%(title)s, %(content)s);'
         self.cursor.execute(insert_query, new_note)
         self.cnx.commit()
 
@@ -89,8 +89,8 @@ class MySQLdb(object):
 
 
     def inser_business_card_into_db(self, data):
-        insert_query = 'INSERT INTO business_card (date, priority, name, surname, mobile) ' \
-                       'VALUES (%s, %s, %s, %s, %s);'
+        insert_query = 'INSERT INTO business_card (name, surname, mobile) ' \
+                       'VALUES (%s, %s, %s);'
         self.cursor.execute(insert_query, data)
         self.cnx.commit()
 
@@ -106,8 +106,8 @@ class MySQLdb(object):
 
 
     def insert_discount_code_into_db(self, data):
-        insert_query = 'INSERT INTO discount_code (date, priority, shop, discount, code) ' \
-                       'VALUES (%s, %s, %s, %s, %s);'
+        insert_query = 'INSERT INTO discount_code (shop, discount, code) ' \
+                       'VALUES (%s, %s, %s);'
         self.cursor.execute(insert_query, data)
         self.cnx.commit()
 

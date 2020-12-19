@@ -20,7 +20,7 @@ while True:
         if x == '2':
             my_organizer.display_notes()
         if x == '3':
-            my_organizer.detele_note()
+            my_organizer.delete_note()
         if x == '4':
             my_organizer.add_business_card()
         if x == '5':
