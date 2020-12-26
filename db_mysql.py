@@ -119,3 +119,4 @@ class MySQLdb(object):
     def delete_discount_code_from_db(self, id):
         delete_query = 'DELETE FROM discount_code WHERE id = %s;'
         self.cursor.execute(delete_query, id)
+        self.cnx.commit()
